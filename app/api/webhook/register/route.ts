@@ -57,7 +57,8 @@ export async function POST(req: Request) {
                     data: {
                         id: evt.data.id!,
                         email: primaryEmail.email_address,
-                        isSubscribed: false
+                        isSubscribed: false,
+                        role: "user"
                     }
                 })
                 console.log("User created", newUser)
