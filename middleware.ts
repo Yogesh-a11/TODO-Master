@@ -1,20 +1,8 @@
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 
 
-const isPublicRoute = createRouteMatcher(["/" , "/api/webhook/register", "/sign-up", "/sign-in"])
+import { clerkMiddleware } from '@clerk/nextjs/server'
 
-export default clerkMiddleware(async(auth, request) => {
-  if ( !isPublicRoute(request)) {
-    await auth.protect();
-  }
-  
-});
-// const { userId } = await auth()
-
-//   if (!userId) {
-//     currentUser.name.
-//   }
-
+export default clerkMiddleware()
 
 export const config = {
   matcher: [
@@ -23,4 +11,67 @@ export const config = {
     // Always run for API routes
     '/(api|trpc)(.*)',
   ],
-};
+}
+
+
+// "use client"
+// import { NextRequest, NextResponse } from "next/server";
+// import { useAuth } from "@clerk/nextjs";
+
+// const publicRoutes = ["/", "/api/webhook/register", "/sign-in", "/sign-up"];
+
+// export async function middleware(req: NextRequest) {
+//   const { userId } = useAuth();
+//   const { pathname } = req.nextUrl;
+
+//   // Handle unauthenticated users accessing protected routes
+//   if (!userId && !publicRoutes.includes(pathname)) {
+//     return NextResponse.redirect(new URL("/sign-in", req.url));
+//   }
+
+//   if (userId) {
+//     try {
+//       // Use the Clerk API to fetch user data
+//       const response = await fetch(
+//         `https://api.clerk.dev/v1/users/${userId}`,
+//         {
+//           headers: {
+//             Authorization: `Bearer ${process.env.CLERK_API_KEY}`,
+//           },
+//         }
+//       );
+
+//       if (!response.ok) {
+//         throw new Error(`Failed to fetch user data: ${response.statusText}`);
+//       }
+
+//       const user = await response.json();
+//       const role = user.public_metadata?.role;
+
+//       // Redirect admin users to the admin dashboard
+//       if (role === "admin" && pathname === "/dashboard") {
+//         return NextResponse.redirect(new URL("/admin/dashboard", req.url));
+//       }
+
+//       // Prevent non-admin users from accessing admin routes
+//       if (role !== "admin" && pathname.startsWith("/admin")) {
+//         return NextResponse.redirect(new URL("/dashboard", req.url));
+//       }
+
+//       // Redirect authenticated users trying to access public routes
+//       if (publicRoutes.includes(pathname)) {
+//         const dashboardRoute = role === "admin" ? "/admin/dashboard" : "/dashboard";
+//         return NextResponse.redirect(new URL(dashboardRoute, req.url));
+//       }
+//     } catch (error) {
+//       console.error("Error fetching user data from Clerk:", error);
+//       return NextResponse.redirect(new URL("/error", req.url));
+//     }
+//   }
+
+//   return NextResponse.next();
+// }
+
+// export const config = {
+//   matcher: ["/((?!.*\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+// };

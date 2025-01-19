@@ -21,7 +21,7 @@ const Signup = () => {
     const {isLoaded, signUp, setActive} = useSignUp()
     const [emailAddress, setEmailAddress] = useState("")
     const [password, setpassword] = useState("")
-    const [pendingVerification, setPendingVerification] = useState(false)
+    const [pendingVerification, setPendingVerification] = useState(false)    
     const [code, setCode] = useState("")
     const [error, seterror] = useState("")
     const [showPassword, setShowPassword] = useState(false)
@@ -41,7 +41,7 @@ const Signup = () => {
         try {
             await signUp.create({
                 emailAddress,
-                password
+                password,
             })
 
             await signUp.prepareEmailAddressVerification({

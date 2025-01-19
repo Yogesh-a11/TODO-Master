@@ -18,6 +18,7 @@ model User {
   email            String    @unique
   isSubscribed     Boolean   @default(false)
   subscriptionEnds DateTime?
+  role             String
   todos            Todo[]
 }
 
